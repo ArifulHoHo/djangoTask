@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 from django.utils import timezone
 from django.contrib import messages
@@ -19,7 +20,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-            return redirect('list_employees')  # Assume you have a URL named 'home'
+            return redirect('list_employees') 
         else:
             # Return an 'invalid login' error message.
             messages.error(request, 'Invalid username or password.')
@@ -196,3 +197,9 @@ def checkin_device(request, pk):
         'action_button_text': 'Check-in',
     }
     return render(request, 'allocation.html', context)
+
+def logout_view(request):
+    # Log out the user.
+    logout(request)
+    # Redirect to a login page.
+    return redirect('login')
