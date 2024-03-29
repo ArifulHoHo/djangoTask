@@ -10,3 +10,17 @@ class DeviceForm(ModelForm):
     class Meta:
         model = Device
         fields = ['name', 'serial_number', 'model', 'status']
+
+class DeviceStatusForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DeviceStatusForm, self).__init__(*args, **kwargs)
+        
+        self.fields['status'].choices = [
+            ('', 'Choose...'),  # Optionally add a default 'choose' option
+            ('in_repair', 'In Repair'),
+            ('out_of_service', 'Out of Service'),
+        ]
+
+    class Meta:
+        model = Device
+        fields = ['status']

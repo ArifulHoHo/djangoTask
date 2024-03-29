@@ -10,5 +10,5 @@ urlpatterns = [
 
     path('devices/', views.list_devices, name='list_devices'),
     path('devices/add/', views.add_device, name='add_device'),
-    
+    path('devices/update/<int:pk>/', views.update_device, name='update_device'),
 ]

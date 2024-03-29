@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
 from .models import Device, Employee
-from .forms import DeviceForm, EmployeeForm
+from .forms import DeviceForm, DeviceStatusForm, EmployeeForm
 # Create your views here.
 
 # displays the login page and processes login information
@@ -122,3 +122,20 @@ def add_device(request):
     }
     return render(request, 'add_item.html', context)
 
+@login_required(login_url='login')
+def update_device(request, pk):
+    device = get_object_or_404(Device, pk=pk, company=request.user.employee.company)
+    if request.method == "POST":
+        form = DeviceStatusForm(request.POST, instance=device)
+        if form.is_valid():
+            form.save()
+            return redirect('list_devices')
+    else:
+        form = DeviceStatusForm(instance=device)
+    context = {
+        'form': form,
+        'item_name': 'Device',
+        'item': device,
+        'list_url': 'list_devices'
+    }
+    return render(request, 'update_item.html', context)
