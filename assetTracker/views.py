@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
+from django.utils import timezone
 from django.contrib import messages
 from .models import Device, DeviceLog, Employee
-from .forms import DeviceForm, DeviceStatusForm, EmployeeForm
+from .forms import DeviceAllocationForm, DeviceCheckinForm, DeviceForm, DeviceStatusForm, EmployeeForm
 # Create your views here.
 
 # displays the login page and processes login information
@@ -145,3 +146,53 @@ def view_device_log(request, pk):
     device = get_object_or_404(Device, pk=pk, company=request.user.employee.company)
     logs = DeviceLog.objects.filter(device=device).order_by('-check_out_time')
     return render(request, 'device_log.html', {'device': device, 'logs': logs})
+
+@login_required(login_url='login')
+def allocate_device(request, pk):
+    device = get_object_or_404(Device, pk=pk, company=request.user.employee.company)
+    if request.method == 'POST':
+        form = DeviceAllocationForm(request.POST)
+        if form.is_valid():
+            allocation = form.save(commit=False)
+            allocation.device = device
+            allocation.check_out_time = timezone.now()
+            allocation.save()
+            device.status = 'checked_out'
+            device.save()
+            return redirect('view_device_log', pk=device.pk)
+    else:
+        form = DeviceAllocationForm()
+    context = {
+        'form': form,
+        'device': device,
+        'action_title': 'Allocate Device',
+        'action_button_text': 'Allocate',
+    }
+    return render(request, 'allocation.html', context)
+
+@login_required(login_url='login')
+def checkin_device(request, pk):
+    device = get_object_or_404(Device, pk=pk, company=request.user.employee.company)
+    if request.method == 'POST':
+        # Assuming the latest log entry will be updated
+        log_entry = DeviceLog.objects.filter(device=device).order_by('-check_out_time').first()
+        print(log_entry)
+        form = DeviceCheckinForm(request.POST, instance=log_entry)
+        if form.is_valid():
+            log_entry = form.save(commit=False)
+            log_entry.check_in_time = timezone.now()
+            log_entry.save()
+            device_status = form.cleaned_data.get('device_status')
+            device.status = device_status
+            device.save()
+            return redirect('view_device_log', pk=device.pk)
+    else:
+        form = DeviceCheckinForm()
+
+    context = {
+        'form': form,
+        'device': device,
+        'action_title': 'Device Check-in',
+        'action_button_text': 'Check-in',
+    }
+    return render(request, 'allocation.html', context)

@@ -13,4 +13,6 @@ urlpatterns = [
     path('devices/update/<int:pk>/', views.update_device, name='update_device'),
 
     path('devices/log/<int:pk>/', views.view_device_log, name='view_device_log'),
+    path('devices/allocate/<int:pk>/', views.allocate_device, name='allocate_device'),
+    path('devices/checkin/<int:pk>/', views.checkin_device, name='checkin_device'),
 ]

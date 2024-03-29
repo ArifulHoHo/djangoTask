@@ -11,10 +11,10 @@
 
         {% if device.status == 'available' %}
         <!-- Add Allocation Button -->
-        <a href="">Allocate Device</a>
-        {% else %}
+        <a href="{% url 'allocate_device' device.id %}">Allocate Device</a>
+        {% elif device.status == 'checked_out' %}
         <!-- Add Check-in Button -->
-        <a href="">Check-in Device</a>
+        <a href="{% url 'checkin_device' device.id %}">Check-in Device</a>
         {% endif %}
     </div>
 

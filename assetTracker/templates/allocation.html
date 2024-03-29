@@ -1,0 +1,14 @@
+{% extends 'navbar.html' %} {% block content %}
+<div>
+    <h2>{{ action_title }}</h2>
+
+    <form method="post" action="">
+        {% csrf_token %} {{ form.as_p }}
+        <input type="submit" value="{{ action_button_text }}">
+
+        </input>
+    </form>
+
+    <a href="{% url 'view_device_log' device.id %}">Back to Device Log</a>
+    {% endblock %}
+</div>
