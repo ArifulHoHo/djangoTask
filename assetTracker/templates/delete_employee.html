@@ -1,0 +1,18 @@
+{% extends 'navbar.html' %} {% block content %}
+<div>
+    <h1>Delete Employee</h1>
+
+    <p>
+        Are you sure you want to terminate <b>{{ employee.name }}</b> from the
+        company?
+    </p>
+
+    <form method="post" action="{% url 'delete_employee' employee.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Confirm" />
+    </form>
+
+    <a href="{% url 'list_employees' %}">Cancel</a>
+
+    {% endblock content %}
+</div>

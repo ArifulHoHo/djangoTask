@@ -34,10 +34,10 @@
                 {% endif %}
                 <td>
                     <div>
-                        <a href="">Update</a>
+                        <a href="{% url update_url item.id %}">Update</a>
                         {% if item_name == "Employee" %}
                         {% if item.id != request.user.employee.id %}
-                        <a href="">Remove</a>
+                        <a href="{% url delete_url item.id %}">Remove</a>
                         {% endif %}
                         {% else %}
                         <a href="">Device Log</a>

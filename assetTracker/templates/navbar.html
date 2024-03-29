@@ -17,7 +17,7 @@
         <span>Welcome, {{ request.user.employee.name }} from <b>{{ request.user.employee.company.name }}</b></span>
         <div class="navbar-links">
             <a href="{% url 'list_employees' %}">Employees</a>
-            <a href="">Devices</a>
+            <a href="{% url 'list_devices' %}">Devices</a>
             <a href="">Log Out</a>
         </div>
         {% endif %}

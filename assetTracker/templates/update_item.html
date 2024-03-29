@@ -1,0 +1,17 @@
+{% extends 'navbar.html' %} {% block content %}
+<div>
+    <h1>Update {{ item_name }} Details</h1>
+
+    {% if item_name == "Device" %}
+    <p>Name: {{ item.name }}</p>
+    <p>Model: {{ item.model }}</p>
+    <p>Serial Number: {{ item.serial_number }}</p>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %} {{ form.as_p }}
+        <input type="submit" value="Update {{ item_name }}" />
+    </form>
+
+    <a href="{% url list_url %}">Back to {{ item_name }} List</a>
+</div>
+{% endblock %}

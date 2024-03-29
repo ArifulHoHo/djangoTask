@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
-from .models import Employee
-from .forms import EmployeeForm
+from .models import Device, Employee
+from .forms import DeviceForm, EmployeeForm
 # Create your views here.
 
 # displays the login page and processes login information
@@ -59,3 +59,66 @@ def add_employee(request):
         'list_url': 'list_employees'
     }
     return render(request, 'add_item.html', context)
+
+
+@login_required(login_url='login')
+def update_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk, company=request.user.employee.company)
+    if request.method == "POST":
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('list_employees')
+    else:
+        form = EmployeeForm(instance=employee)
+    context = {
+        'form': form,
+        'item_name': 'Employee',
+        'list_url': 'list_employees'
+    }
+    return render(request, 'update_item.html', context)
+
+
+@login_required(login_url='login')
+def delete_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk, company=request.user.employee.company)
+    if request.method == "POST":
+        if employee.user != request.user:  # Assuming `employee.user` is the User related to the Employee
+            employee.delete()
+            return redirect('list_employees')
+        else:
+            messages.error(request, "You cannot delete your own account.")
+    return render(request, 'delete_employee.html', {'employee': employee})
+
+@login_required(login_url='login')
+def list_devices(request):
+    devices = Device.objects.filter(company=request.user.employee.company)
+    context = {
+        'title': 'Devices List',
+        'items': devices,
+        'item_name': 'Device',
+        'add_url': 'add_device',
+        'update_url': 'update_device',
+        'delete_url': 'delete_device',
+    }
+    return render(request, 'item_list.html', context)
+
+@login_required(login_url='login')
+def add_device(request):
+    if request.method == "POST":
+        form = DeviceForm(request.POST)
+        if form.is_valid():
+            device = form.save(commit=False)
+            device.company = request.user.employee.company
+            device.save()
+            return redirect('list_devices')
+    else:
+        form = DeviceForm()
+    context = {
+        'form': form,
+        'item_name': 'Device',
+        'action_url': 'add_device',
+        'list_url': 'list_devices'
+    }
+    return render(request, 'add_item.html', context)
+
