@@ -1,0 +1,52 @@
+{% extends 'navbar.html' %} {% block content %}
+<div>
+    <div>
+        <h1>{{ title }}</h1>
+        <a href="">Add New {{ item_name }}</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                {% if item_name == "Employee" %}
+                <th>Department</th>
+                <th>Role</th>
+                {% else %}
+                <th>Model</th>
+                <th>Serial No.</th>
+                <th>Status</th>
+                {% endif %}
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                {% if item_name == "Employee" %}
+                <td>{{ item.department }}</td>
+                <td>{{ item.role }}</td>
+                {% else %}
+                <td>{{item.model}}</td>
+                <td>{{item.serial_number}}</td>
+                <td>{{item.status}}</td>
+                {% endif %}
+                <td>
+                    <div>
+                        <a href="">Update</a>
+                        {% if item_name == "Employee" %}
+                        {% if item.id != request.user.employee.id %}
+                        <a href="">Remove</a>
+                        {% endif %}
+                        {% else %}
+                        <a href="">Device Log</a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

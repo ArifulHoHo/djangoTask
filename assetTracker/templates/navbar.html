@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <title>Asset Tracker</title>
+</head>
+
+<body>
+
+    <div>
+        {% if request.user.is_authenticated %}
+        <span>Welcome, {{ request.user.employee.name }} from <b>{{ request.user.employee.company.name }}</b></span>
+        <div class="navbar-links">
+            <a href="{% url 'list_employees' %}">Employees</a>
+            <a href="">Devices</a>
+            <a href="">Log Out</a>
+        </div>
+        {% endif %}
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    {% block content %} {% endblock %}
+
+</body>
+
+</html>
