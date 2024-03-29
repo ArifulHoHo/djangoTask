@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from django.contrib import messages
-from .models import Device, Employee
+from .models import Device, DeviceLog, Employee
 from .forms import DeviceForm, DeviceStatusForm, EmployeeForm
 # Create your views here.
 
@@ -139,3 +139,9 @@ def update_device(request, pk):
         'list_url': 'list_devices'
     }
     return render(request, 'update_item.html', context)
+
+@login_required(login_url='login')
+def view_device_log(request, pk):
+    device = get_object_or_404(Device, pk=pk, company=request.user.employee.company)
+    logs = DeviceLog.objects.filter(device=device).order_by('-check_out_time')
+    return render(request, 'device_log.html', {'device': device, 'logs': logs})

@@ -40,7 +40,7 @@
                         <a href="{% url delete_url item.id %}">Remove</a>
                         {% endif %}
                         {% else %}
-                        <a href="">Device Log</a>
+                        <a href="{% url 'view_device_log' item.id %}">Device Log</a>
                         {% endif %}
                     </div>
                 </td>
