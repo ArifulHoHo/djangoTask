@@ -1,5 +1,5 @@
 {% extends 'navbar.html' %} {% block content %}
-<div>
+<div class="content-wrapper">
     <h1>Update {{ item_name }} Details</h1>
 
     {% if item_name == "Device" %}
@@ -9,7 +9,7 @@
     {% endif %}
     <form method="post" action="">
         {% csrf_token %} {{ form.as_p }}
-        <input type="submit" value="Update {{ item_name }}" />
+        <input type="submit" class="action-button" value="Update {{ item_name }}" />
     </form>
 
     <a href="{% url list_url %}">Back to {{ item_name }} List</a>

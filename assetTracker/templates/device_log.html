@@ -1,7 +1,7 @@
 {% extends 'navbar.html' %} {% block content %}
-<div>
+<div class="content-container">
     <h1>Device Log for:</h1>
-    <div>
+    <div class="header-with-button">
         <h3>
             Asset: {{ device.name }}
             <br />
@@ -11,14 +11,14 @@
 
         {% if device.status == 'available' %}
         <!-- Add Allocation Button -->
-        <a href="{% url 'allocate_device' device.id %}">Allocate Device</a>
+        <a href="{% url 'allocate_device' device.id %}" class="action-button">Allocate Device</a>
         {% elif device.status == 'checked_out' %}
         <!-- Add Check-in Button -->
-        <a href="{% url 'checkin_device' device.id %}">Check-in Device</a>
+        <a href="{% url 'checkin_device' device.id %}" class="action-button">Check-in Device</a>
         {% endif %}
     </div>
 
-    <table>
+    <table class="styled-table">
         <tr>
             <th>Allocated To</th>
             <th>Check Out Time</th>
@@ -46,7 +46,7 @@
         {% endfor %}
     </table>
 
-    <a href="{% url 'list_devices' %}">Back to Devices
+    <a href="{% url 'list_devices' %}" style="display: flex; justify-content: center" class="back-link">Back to Devices
         List</a>
 
     {% endblock content %}

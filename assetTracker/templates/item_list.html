@@ -1,11 +1,11 @@
 {% extends 'navbar.html' %} {% block content %}
-<div>
-    <div>
+<div class="content-container">
+    <div class="header-with-button">
         <h1>{{ title }}</h1>
-        <a href="{% url add_url %}">Add New {{ item_name }}</a>
+        <a href="{% url add_url %}" class="action-button">Add New {{ item_name }}</a>
     </div>
 
-    <table>
+    <table class="styled-table">
         <thead>
             <tr>
                 <th>Name</th>
@@ -33,14 +33,14 @@
                 <td>{{item.status}}</td>
                 {% endif %}
                 <td>
-                    <div>
-                        <a href="{% url update_url item.id %}">Update</a>
+                    <div class="table-actions">
+                        <a href="{% url update_url item.id %}" class="btn table-btn">Update</a>
                         {% if item_name == "Employee" %}
                         {% if item.id != request.user.employee.id %}
-                        <a href="{% url delete_url item.id %}">Remove</a>
+                        <a href="{% url delete_url item.id %}" class="btn table-btn">Remove</a>
                         {% endif %}
                         {% else %}
-                        <a href="{% url 'view_device_log' item.id %}">Device Log</a>
+                        <a href="{% url 'view_device_log' item.id %}" class="btn table-btn">Device Log</a>
                         {% endif %}
                     </div>
                 </td>

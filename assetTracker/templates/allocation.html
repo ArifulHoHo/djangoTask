@@ -1,10 +1,10 @@
 {% extends 'navbar.html' %} {% block content %}
-<div>
+<div class="content-wrapper">
     <h2>{{ action_title }}</h2>
 
     <form method="post" action="">
         {% csrf_token %} {{ form.as_p }}
-        <input type="submit" value="{{ action_button_text }}">
+        <input type="submit" class="action-button" value="{{ action_button_text }}">
 
         </input>
     </form>

@@ -12,7 +12,7 @@
 
 <body>
 
-    <div>
+    <div class="navbar">
         {% if request.user.is_authenticated %}
         <span>Welcome, {{ request.user.employee.name }} from <b>{{ request.user.employee.company.name }}</b></span>
         <div class="navbar-links">
